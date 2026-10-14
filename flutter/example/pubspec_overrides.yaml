@@ -1,5 +1,0 @@
-# Until dart_wing 1.0.0 is on pub.dev, resolve it from ../../dart. Delete this
-# file once it is published: flutter_wing must build against the release.
-dependency_overrides:
-  dart_wing:
-    path: ../../dart

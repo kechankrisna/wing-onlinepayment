@@ -58,11 +58,12 @@ packages:
     source: hosted
     version: "3.0.7"
   dart_wing:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "../../dart"
-      relative: true
-    source: path
+      name: dart_wing
+      sha256: b15138a57df0679c4c08c93d59d098e2463b8b905b6f38fa65cab7d0f5d5883d
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.0"
   dio:
     dependency: transitive

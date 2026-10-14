@@ -1,14 +1,11 @@
 name: flutter
 
-# dart/** too: flutter/pubspec_overrides.yaml resolves dart_wing from ../dart
-# until dart_wing 1.0.0 is on pub.dev
-
 on:
   push:
     branches: [main]
-    paths: ['flutter/**', 'dart/**', '.github/workflows/flutter.yml']
+    paths: ['flutter/**', '.github/workflows/flutter.yml']
   pull_request:
-    paths: ['flutter/**', 'dart/**', '.github/workflows/flutter.yml']
+    paths: ['flutter/**', '.github/workflows/flutter.yml']
   workflow_dispatch:
 
 permissions:

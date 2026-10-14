@@ -113,9 +113,8 @@ Every SDK should reproduce these payloads, hashes and callbacks.
 Plain `v*` tags are PHP releases; use prefixed tags (e.g. `dart-v1.0.1`) for
 the others. Packagist ignores tags that do not parse as versions.
 
-Release `dart_wing` before `flutter_wing`: until `dart_wing` 1.0.0 is on
-pub.dev, `flutter/pubspec_overrides.yaml` (and the example's) resolve it
-from `../dart`. Delete both files once it is published.
+`flutter_wing` depends on `dart_wing` from pub.dev: release a `dart/`
+change before the `flutter/` change that needs it.
 
 One-time setup for Dart and Flutter: on pub.dev, the package → Admin →
 Automated publishing → GitHub Actions, repository

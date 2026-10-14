@@ -36,9 +36,8 @@ lists what is easy to get wrong.
   the `v1` of the spec's endpoint list. The authorization token is opaque
   (not a JWT). Wing staging (`https://stage-pm2.wingbank.com`) serves the API
   at its root, without `/wingonlinesdkv2`: use the base URL Wing gives as is.
-- `flutter/` depends on `dart_wing` ^1.0.0. Until it is on pub.dev,
-  `flutter/pubspec_overrides.yaml` and `flutter/example/pubspec_overrides.yaml`
-  resolve it from `../dart`; delete them after the first Dart release.
+- `flutter/` depends on `dart_wing` ^1.0.0 from pub.dev, not on `dart/` by
+  path: a `dart/` change reaches it only after a Dart release.
 - `composer.json` must stay at the repository root for Packagist;
   `.gitattributes` keeps the other SDKs out of the Composer archive.
 - Kotlin (`kotlin/`) is JVM-only and server-side. Keep `VERSION_NAME` in
