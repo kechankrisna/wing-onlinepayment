@@ -5,7 +5,7 @@ import 'package:example/src/checkout_page.dart';
 import 'package:example/src/payment_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_wing/flutter_wing.dart';
+import 'package:flutter_wing_checkout/flutter_wing_checkout.dart';
 
 class FakeBackend implements PaymentBackend {
   FakeBackend({this.inquiry, this.authorizeError});

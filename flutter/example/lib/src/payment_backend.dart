@@ -1,4 +1,4 @@
-import 'package:flutter_wing/flutter_wing.dart';
+import 'package:flutter_wing_checkout/flutter_wing_checkout.dart';
 
 /// A payment Wing is ready to take: open [confirmUrl] in `WingCheckoutView`.
 class CheckoutSession {

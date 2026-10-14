@@ -1,4 +1,4 @@
-// Complete Wing checkout with flutter_wing. Configure it with a .env (copy
+// Complete Wing checkout with flutter_wing_checkout. Configure it with a .env (copy
 // .env.example) and run:
 //
 //   flutter run --dart-define-from-file=.env
@@ -31,7 +31,7 @@ class ExampleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    title: 'flutter_wing',
+    title: 'flutter_wing_checkout',
     theme: ThemeData(colorSchemeSeed: Colors.lightGreen),
     home: switch ((backend, openCheckout)) {
       (null, _) => const SetupPage(),

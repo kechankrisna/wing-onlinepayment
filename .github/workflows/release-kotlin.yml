@@ -1,5 +1,5 @@
 # Publishes kotlin/ (io.github.kechankrisna:wing-onlinepayment) to Maven Central
-# when a tag like kotlin-v2.0.1 is pushed. The tag must equal VERSION_NAME in
+# when a tag like kotlin-v1.0.1 is pushed. The tag must equal VERSION_NAME in
 # kotlin/gradle.properties.
 #
 # One-time setup: verify the io.github.kechankrisna namespace on

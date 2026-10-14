@@ -189,7 +189,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_wing:
+  flutter_wing_checkout:
     dependency: "direct main"
     description:
       path: ".."

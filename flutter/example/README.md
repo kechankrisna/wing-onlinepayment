@@ -1,4 +1,4 @@
-# flutter_wing example
+# flutter_wing_checkout example
 
 A complete Wing checkout: a cart, **Pay with Wing**, Wing's payment page in
 `WingCheckoutView`, confirmation with the inquiry API, and a receipt with

@@ -6,7 +6,7 @@
 |---|---|---|
 | `spec/` | shared known answers (`spec/test-vectors/`) | PHP to regenerate |
 | `dart/` | `dart_wing` | Dart 3.9+ |
-| `flutter/` | `flutter_wing` | Flutter |
+| `flutter/` | `flutter_wing_checkout` | Flutter |
 | `php/` + `composer.json` | `kechankrisna/php_wing` | PHP, Composer |
 | `kotlin/` | `io.github.kechankrisna:wing-onlinepayment` | JDK 17+, Gradle wrapper |
 | `node/` | `@kechankrisna/wing-onlinepayment` | Node.js 22+, npm |
@@ -113,13 +113,13 @@ Every SDK should reproduce these payloads, hashes and callbacks.
 Plain `v*` tags are PHP releases; use prefixed tags (e.g. `dart-v1.0.1`) for
 the others. Packagist ignores tags that do not parse as versions.
 
-`flutter_wing` depends on `dart_wing` from pub.dev: release a `dart/`
+`flutter_wing_checkout` depends on `dart_wing` from pub.dev: release a `dart/`
 change before the `flutter/` change that needs it.
 
 One-time setup for Dart and Flutter: on pub.dev, the package → Admin →
 Automated publishing → GitHub Actions, repository
 `kechankrisna/wing-onlinepayment`, tag pattern `dart-v{{version}}`
-(dart_wing) or `flutter-v{{version}}` (flutter_wing). The first version of
+(dart_wing) or `flutter-v{{version}}` (flutter_wing_checkout). The first version of
 a new package must be published by hand (`dart pub publish`).
 
 One-time setup for Kotlin: on central.sonatype.com, verify the namespace

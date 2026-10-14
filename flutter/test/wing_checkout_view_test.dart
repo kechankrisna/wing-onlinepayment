@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_wing/flutter_wing.dart';
+import 'package:flutter_wing_checkout/flutter_wing_checkout.dart';
 
 /// A web view platform that records the created web view and lets the test
 /// simulate what the page does.

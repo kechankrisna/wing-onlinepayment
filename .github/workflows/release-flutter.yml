@@ -1,5 +1,5 @@
-# Publishes flutter/ (flutter_wing) to pub.dev when a tag like
-# flutter-v2.0.1 is pushed. One-time setup on pub.dev: flutter_wing →
+# Publishes flutter/ (flutter_wing_checkout) to pub.dev when a tag like
+# flutter-v1.0.1 is pushed. One-time setup on pub.dev: flutter_wing_checkout →
 # Admin → Automated publishing → GitHub Actions, repository
 # kechankrisna/wing-onlinepayment, tag pattern flutter-v{{version}}.
 #

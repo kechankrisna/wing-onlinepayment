@@ -10,7 +10,7 @@ import 'package:example/src/payment_backend.dart';
 import 'package:example/src/wing_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_wing/flutter_wing.dart';
+import 'package:flutter_wing_checkout/flutter_wing_checkout.dart';
 import 'package:integration_test/integration_test.dart';
 
 /// Pumps until [finder] matches nothing, for at most [seconds].
@@ -41,7 +41,7 @@ void main() {
           amount: 0.1,
           returnUrl: returnUrl,
           cancelUrl: cancelUrl,
-          itemName: 'flutter_wing integration test',
+          itemName: 'flutter_wing_checkout integration test',
         ),
       ),
     );

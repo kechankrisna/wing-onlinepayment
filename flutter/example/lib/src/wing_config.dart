@@ -1,4 +1,4 @@
-import 'package:flutter_wing/flutter_wing.dart';
+import 'package:flutter_wing_checkout/flutter_wing_checkout.dart';
 
 /// Wing credentials compiled in with `--dart-define-from-file=.env`.
 ///

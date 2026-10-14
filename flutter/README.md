@@ -1,11 +1,11 @@
-# flutter_wing
+# flutter_wing_checkout
 
 Flutter checkout for Wing Bank online payment, built on
 [`dart_wing`](https://pub.dev/packages/dart_wing), which it re-exports.
 
 ```yaml
 dependencies:
-  flutter_wing: ^1.0.0
+  flutter_wing_checkout: ^1.0.0
 ```
 
 ## Paying in a web view
@@ -16,7 +16,7 @@ calls `authorize` with `dart_wing` (or the PHP, Kotlin or Node.js SDK) and
 returns `confirmUrl` to the app, which opens Wing's payment page:
 
 ```dart
-import 'package:flutter_wing/flutter_wing.dart';
+import 'package:flutter_wing_checkout/flutter_wing_checkout.dart';
 
 final result = await WingCheckoutView.open(
   context,

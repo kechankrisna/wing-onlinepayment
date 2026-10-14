@@ -1,5 +1,5 @@
 name: example
-description: flutter_wing example.
+description: flutter_wing_checkout example.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_wing:
+  flutter_wing_checkout:
     path: ../
 
 dev_dependencies:

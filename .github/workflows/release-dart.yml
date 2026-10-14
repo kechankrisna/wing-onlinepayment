@@ -1,4 +1,4 @@
-# Publishes dart/ (dart_wing) to pub.dev when a tag like dart-v2.0.1 is
+# Publishes dart/ (dart_wing) to pub.dev when a tag like dart-v1.0.1 is
 # pushed. One-time setup on pub.dev: dart_wing → Admin → Automated
 # publishing → GitHub Actions, repository kechankrisna/wing-onlinepayment,
 # tag pattern dart-v{{version}}.

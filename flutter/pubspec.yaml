@@ -1,4 +1,4 @@
-name: flutter_wing
+name: flutter_wing_checkout
 description: >-
   Flutter checkout for Wing Bank online payment, built on dart_wing: opens
   Wing's payment page in a web view and reports success or cancellation.

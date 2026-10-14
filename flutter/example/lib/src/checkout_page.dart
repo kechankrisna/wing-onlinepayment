@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wing/flutter_wing.dart';
+import 'package:flutter_wing_checkout/flutter_wing_checkout.dart';
 
 import 'payment_backend.dart';
 import 'receipt_page.dart';
