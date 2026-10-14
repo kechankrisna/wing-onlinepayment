@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'wing_checkout_result.dart';
 
@@ -22,7 +22,8 @@ import 'wing_checkout_result.dart';
 /// }
 /// ```
 ///
-/// Supported where `webview_flutter` is: Android, iOS and macOS.
+/// Supported where `flutter_inappwebview` is: Android, iOS, macOS, Windows
+/// and the web.
 class WingCheckoutView extends StatefulWidget {
   /// Creates the view.
   const WingCheckoutView({
@@ -32,6 +33,7 @@ class WingCheckoutView extends StatefulWidget {
     required this.cancelUrl,
     required this.onResult,
     this.loading,
+    this.onWebViewCreated,
   });
 
   /// Wing's payment page, from `WingAuthorizationResponse.confirmUrl`
@@ -48,6 +50,10 @@ class WingCheckoutView extends StatefulWidget {
 
   /// shown until the first page has loaded; a progress indicator by default
   final Widget? loading;
+
+  /// receives the web view's controller, e.g. to read the page or its
+  /// cookies
+  final void Function(InAppWebViewController controller)? onWebViewCreated;
 
   /// Pushes a page with a [WingCheckoutView] and completes with its result,
   /// or `null` when the payer leaves with the back button.
@@ -78,36 +84,13 @@ class WingCheckoutView extends StatefulWidget {
 }
 
 class _WingCheckoutViewState extends State<WingCheckoutView> {
-  late final WebViewController _controller;
   bool _loading = true;
   bool _done = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onNavigationRequest: (request) => _finish(request.url)
-              ? NavigationDecision.prevent
-              : NavigationDecision.navigate,
-          // redirects some platforms do not ask about
-          onUrlChange: (change) {
-            final url = change.url;
-            if (url != null) _finish(url);
-          },
-          onPageFinished: (_) {
-            if (mounted && _loading) setState(() => _loading = false);
-          },
-        ),
-      )
-      ..loadRequest(widget.confirmUrl);
-  }
-
   /// Reports the result when [url] is the return or cancel URL.
-  bool _finish(String url) {
-    final uri = Uri.tryParse(url);
+  bool _finish(WebUri? url) {
+    // a plain Uri: results compare equal to Uri.parse(...)
+    final uri = url == null ? null : Uri.tryParse(url.toString());
     final returnUrl = Uri.tryParse(widget.returnUrl);
     final cancelUrl = Uri.tryParse(widget.cancelUrl);
     if (uri == null || returnUrl == null || cancelUrl == null) return false;
@@ -128,7 +111,24 @@ class _WingCheckoutViewState extends State<WingCheckoutView> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        WebViewWidget(controller: _controller),
+        InAppWebView(
+          initialUrlRequest: URLRequest(url: WebUri.uri(widget.confirmUrl)),
+          initialSettings: InAppWebViewSettings(
+            javaScriptEnabled: true,
+            useShouldOverrideUrlLoading: true,
+          ),
+          onWebViewCreated: widget.onWebViewCreated,
+          shouldOverrideUrlLoading: (controller, action) async =>
+              _finish(action.request.url)
+              ? NavigationActionPolicy.CANCEL
+              : NavigationActionPolicy.ALLOW,
+          // redirects some platforms do not ask about
+          onLoadStart: (controller, url) => _finish(url),
+          onUpdateVisitedHistory: (controller, url, isReload) => _finish(url),
+          onLoadStop: (controller, url) {
+            if (mounted && _loading) setState(() => _loading = false);
+          },
+        ),
         if (_loading)
           Center(child: widget.loading ?? const CircularProgressIndicator()),
       ],

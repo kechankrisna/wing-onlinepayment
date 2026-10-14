@@ -6,7 +6,7 @@ class WingAuthorizationResponse {
   /// `errorCode` / `errorText`
   final WingStatus status;
 
-  /// authorization token (a JWT), when [isSuccess]
+  /// authorization token (opaque), when [isSuccess]
   final String? token;
 
   /// Wing's payment page for [token]: redirect the payer, or open it in a

@@ -32,8 +32,10 @@ lists what is easy to get wrong.
 - Wing business errors (`errorCode` other than `200`) are returned in
   `status`; only transport and local failures throw. Logs mask
   `rest_api_key`.
-- The spec gives the inquiry endpoint as `v2` (section 4.1) and `v1`
-  (section 2); the SDKs use `v2`.
+- Inquiry is `v2` (section 4.1 of the spec, confirmed on Wing staging), not
+  the `v1` of the spec's endpoint list. The authorization token is opaque
+  (not a JWT). Wing staging (`https://stage-pm2.wingbank.com`) serves the API
+  at its root, without `/wingonlinesdkv2`: use the base URL Wing gives as is.
 - `flutter/` depends on `dart_wing` ^1.0.0. Until it is on pub.dev,
   `flutter/pubspec_overrides.yaml` and `flutter/example/pubspec_overrides.yaml`
   resolve it from `../dart`; delete them after the first Dart release.

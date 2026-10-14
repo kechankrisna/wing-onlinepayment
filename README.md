@@ -34,6 +34,14 @@ For ABA PayWay, see
 computed with PHP's `openssl_encrypt`, the function of the PHP sample in
 Wing's spec (`spec/test-vectors/`).
 
+## Tested against Wing
+
+The Dart, PHP, Kotlin and Node.js SDKs pass their integration tests against
+Wing's staging server (`https://stage-pm2.wingbank.com`): authorization
+succeeds, and inquiry of an unknown order returns `PG-I007` "Reference
+number not found". `flutter_wing` opens Wing's real payment page in a web
+view on macOS.
+
 ## Where to run it
 
 Call Wing from **your server**: the REST API key and the password are

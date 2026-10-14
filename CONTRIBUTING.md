@@ -46,6 +46,18 @@ flutter test
 (cd example && flutter pub get && flutter test)
 ```
 
+Flutter live tests: open Wing's real payment page in a real web view, with
+the credentials of `flutter/example/.env` (copy its `.env.example`). Run
+`flutter create --platforms macos .` in `flutter/example` once (the
+generated `macos/` is ignored) and add the
+`com.apple.security.network.client` entitlement to both
+`macos/Runner/*.entitlements` (see `flutter/example/README.md`):
+
+```sh
+cd flutter/example
+flutter test integration_test -d macos --dart-define-from-file=.env
+```
+
 PHP (from the repository root):
 
 ```sh

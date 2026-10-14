@@ -79,7 +79,7 @@ export interface Transaction {
 /** Response of the authorization API. */
 export interface AuthorizationResponse {
   status: WingStatus;
-  /** authorization token (a JWT), on success */
+  /** authorization token (opaque), on success */
   token: string | undefined;
   /** Wing's payment page for `token`: redirect the payer there */
   confirmUrl: string | undefined;

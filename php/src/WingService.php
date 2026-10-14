@@ -33,7 +33,7 @@ final class WingService
     /** Wing's payment page, opened by {@see confirmUrl()} */
     public const string CONFIRM_PATH = '/v1/online/payment/confirm';
 
-    /** Section 4.1 of the spec (v2.0.3) gives `v2`; its endpoint list in section 2 still shows `v1`. */
+    /** `v2`, as in section 4.1 of the spec (v2.0.3) and on Wing's staging server. */
     public const string INQUIRY_PATH = '/v2/online/payment/transaction/inquiry';
 
     /** builds the request bodies; exposed to support new endpoints */

@@ -188,7 +188,7 @@ public class WingService(
         /** Wing's payment page, opened by [confirmUrl] */
         public const val CONFIRM_PATH: String = "/v1/online/payment/confirm"
 
-        /** endpoint of [inquiry]; section 4.1 of the spec (v2.0.3) gives `v2`, its endpoint list `v1` */
+        /** endpoint of [inquiry]: `v2`, as in section 4.1 of the spec (v2.0.3) and on Wing's staging server */
         public const val INQUIRY_PATH: String = "/v2/online/payment/transaction/inquiry"
 
         private const val PASSWORD_IV_BYTES = 16

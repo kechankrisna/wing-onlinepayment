@@ -1,110 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_wing/flutter_wing.dart';
-import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
-/// A web view platform that records what is loaded and lets the test
-/// simulate navigations.
-class FakeWebViewPlatform extends WebViewPlatform {
-  final controllers = <FakeController>[];
-  FakeNavigationDelegate? delegate;
+/// A web view platform that records the created web view and lets the test
+/// simulate what the page does.
+class FakeInAppWebViewPlatform extends InAppWebViewPlatform {
+  FakeWebViewWidget? webView;
 
   @override
-  PlatformWebViewController createPlatformWebViewController(
-    PlatformWebViewControllerCreationParams params,
-  ) {
-    final controller = FakeController(params);
-    controllers.add(controller);
-    return controller;
-  }
-
-  @override
-  PlatformNavigationDelegate createPlatformNavigationDelegate(
-    PlatformNavigationDelegateCreationParams params,
-  ) => delegate = FakeNavigationDelegate(params);
-
-  @override
-  PlatformWebViewWidget createPlatformWebViewWidget(
-    PlatformWebViewWidgetCreationParams params,
-  ) => FakeWebViewWidget(params);
+  PlatformInAppWebViewWidget createPlatformInAppWebViewWidget(
+    PlatformInAppWebViewWidgetCreationParams params,
+  ) => webView = FakeWebViewWidget(params);
 }
 
-class FakeController extends PlatformWebViewController {
-  FakeController(super.params) : super.implementation();
-
-  final loaded = <Uri>[];
-  JavaScriptMode? javaScriptMode;
-
-  @override
-  Future<void> loadRequest(LoadRequestParams params) async {
-    loaded.add(params.uri);
-  }
-
-  @override
-  Future<void> setJavaScriptMode(JavaScriptMode javaScriptMode) async {
-    this.javaScriptMode = javaScriptMode;
-  }
-
-  @override
-  Future<void> setPlatformNavigationDelegate(
-    PlatformNavigationDelegate handler,
-  ) async {}
-}
-
-class FakeNavigationDelegate extends PlatformNavigationDelegate {
-  FakeNavigationDelegate(super.params) : super.implementation();
-
-  NavigationRequestCallback? onNavigationRequest;
-  UrlChangeCallback? onUrlChange;
-  PageEventCallback? onPageFinished;
-
-  @override
-  Future<void> setOnNavigationRequest(
-    NavigationRequestCallback callback,
-  ) async {
-    onNavigationRequest = callback;
-  }
-
-  @override
-  Future<void> setOnUrlChange(UrlChangeCallback callback) async {
-    onUrlChange = callback;
-  }
-
-  @override
-  Future<void> setOnPageFinished(PageEventCallback callback) async {
-    onPageFinished = callback;
-  }
-
-  @override
-  Future<void> setOnPageStarted(PageEventCallback callback) async {}
-
-  @override
-  Future<void> setOnProgress(ProgressCallback callback) async {}
-
-  @override
-  Future<void> setOnWebResourceError(WebResourceErrorCallback callback) async {}
-
-  @override
-  Future<void> setOnHttpError(HttpResponseErrorCallback callback) async {}
-
-  @override
-  Future<void> setOnHttpAuthRequest(HttpAuthRequestCallback callback) async {}
-
-  @override
-  Future<void> setOnSSlAuthError(SslAuthErrorCallback callback) async {}
-
-  /// what the view decides for a navigation to [url]
-  Future<NavigationDecision> navigate(String url) async =>
-      await onNavigationRequest!(
-        NavigationRequest(url: url, isMainFrame: true),
+class FakeController extends PlatformInAppWebViewController {
+  FakeController()
+    : super.implementation(
+        const PlatformInAppWebViewControllerCreationParams(id: 0),
       );
 }
 
-class FakeWebViewWidget extends PlatformWebViewWidget {
+class FakeWebViewWidget extends PlatformInAppWebViewWidget {
   FakeWebViewWidget(super.params) : super.implementation();
+
+  late final InAppWebViewController controller =
+      params.controllerFromPlatform!(FakeController())
+          as InAppWebViewController;
 
   @override
   Widget build(BuildContext context) => const SizedBox.expand();
+
+  @override
+  T controllerFromPlatform<T>(PlatformInAppWebViewController controller) =>
+      params.controllerFromPlatform!(controller) as T;
+
+  @override
+  void dispose() {}
+
+  /// what the view decides for a navigation to [url]
+  Future<NavigationActionPolicy?> navigate(String url) async =>
+      await params.shouldOverrideUrlLoading!(
+        controller,
+        NavigationAction(
+          request: URLRequest(url: WebUri(url)),
+          isForMainFrame: true,
+        ),
+      );
+
+  void loadStop(String url) => params.onLoadStop!(controller, WebUri(url));
+
+  void historyUpdate(String url) =>
+      params.onUpdateVisitedHistory!(controller, WebUri(url), false);
 }
 
 const returnUrl = 'https://shop.test/wing/return?order=1001';
@@ -157,11 +104,17 @@ void main() {
   });
 
   group('WingCheckoutView', () {
-    late FakeWebViewPlatform platform;
+    late FakeInAppWebViewPlatform platform;
 
-    setUp(() => WebViewPlatform.instance = platform = FakeWebViewPlatform());
+    setUp(
+      () =>
+          InAppWebViewPlatform.instance = platform = FakeInAppWebViewPlatform(),
+    );
 
-    Future<List<WingCheckoutResult>> pumpView(WidgetTester tester) async {
+    Future<List<WingCheckoutResult>> pumpView(
+      WidgetTester tester, {
+      void Function(InAppWebViewController)? onWebViewCreated,
+    }) async {
       final results = <WingCheckoutResult>[];
       await tester.pumpWidget(
         MaterialApp(
@@ -170,6 +123,7 @@ void main() {
             returnUrl: returnUrl,
             cancelUrl: cancelUrl,
             onResult: results.add,
+            onWebViewCreated: onWebViewCreated,
           ),
         ),
       );
@@ -178,12 +132,13 @@ void main() {
 
     testWidgets('loads the payment page with JavaScript', (tester) async {
       await pumpView(tester);
-      final controller = platform.controllers.single;
-      expect(controller.loaded, [confirmUrl]);
-      expect(controller.javaScriptMode, JavaScriptMode.unrestricted);
+      final params = platform.webView!.params;
+      expect(params.initialUrlRequest?.url.toString(), confirmUrl.toString());
+      expect(params.initialSettings?.javaScriptEnabled, true);
+      expect(params.initialSettings?.useShouldOverrideUrlLoading, true);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-      platform.delegate!.onPageFinished!(confirmUrl.toString());
+      platform.webView!.loadStop(confirmUrl.toString());
       await tester.pump();
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
@@ -192,18 +147,18 @@ void main() {
       tester,
     ) async {
       final results = await pumpView(tester);
-      final delegate = platform.delegate!;
+      final webView = platform.webView!;
 
       expect(
-        await delegate.navigate('https://sdk-uat.wingmoney.com/pay'),
-        NavigationDecision.navigate,
+        await webView.navigate('https://sdk-uat.wingmoney.com/pay'),
+        NavigationActionPolicy.ALLOW,
       );
       expect(results, isEmpty);
 
       const success =
           'https://shop.test/wing/return?order=1001&status=success&token=t';
-      expect(await delegate.navigate(success), NavigationDecision.prevent);
-      delegate.onUrlChange!(const UrlChange(url: success));
+      expect(await webView.navigate(success), NavigationActionPolicy.CANCEL);
+      webView.historyUpdate(success);
       expect(results, [
         WingCheckoutResult(
           status: WingCheckoutStatus.success,
@@ -212,12 +167,19 @@ void main() {
       ]);
     });
 
-    testWidgets('a redirect seen only as a URL change is reported', (
+    testWidgets('a redirect seen only in the history is reported', (
       tester,
     ) async {
       final results = await pumpView(tester);
-      platform.delegate!.onUrlChange!(const UrlChange(url: cancelUrl));
+      platform.webView!.historyUpdate(cancelUrl);
       expect(results.single.status, WingCheckoutStatus.cancelled);
+    });
+
+    testWidgets('onWebViewCreated is passed to the web view', (tester) async {
+      final created = <InAppWebViewController>[];
+      await pumpView(tester, onWebViewCreated: created.add);
+      platform.webView!.params.onWebViewCreated!(platform.webView!.controller);
+      expect(created, hasLength(1));
     });
 
     testWidgets('open() pops with the result', (tester) async {
@@ -245,7 +207,7 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
       expect(find.byType(WingCheckoutView), findsOneWidget);
 
-      await platform.delegate!.navigate(cancelUrl);
+      await platform.webView!.navigate(cancelUrl);
       await tester.pump();
       await tester.pump(const Duration(seconds: 1));
       expect(find.byType(WingCheckoutView), findsNothing);

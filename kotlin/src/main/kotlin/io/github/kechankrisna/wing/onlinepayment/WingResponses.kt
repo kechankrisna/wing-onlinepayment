@@ -79,7 +79,7 @@ public data class WingTransaction(
 /**
  * Response of the authorization API.
  *
- * @property token authorization token (a JWT), on success
+ * @property token authorization token (opaque), on success
  * @property confirmUrl Wing's payment page for [token]: redirect the payer there
  */
 public data class WingAuthorizationResponse(

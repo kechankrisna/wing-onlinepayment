@@ -3,5 +3,7 @@
 library;
 
 export 'package:dart_wing/dart_wing.dart';
+export 'package:flutter_inappwebview/flutter_inappwebview.dart'
+    show InAppWebViewController;
 export 'src/wing_checkout_result.dart';
 export 'src/wing_checkout_view.dart';

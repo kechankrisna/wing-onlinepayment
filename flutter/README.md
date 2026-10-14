@@ -40,8 +40,26 @@ the widget directly to embed it in your own page, or
 A redirect with `status=success` is not a proof of payment: confirm on your
 server with `inquiry` (or the callback) before delivering.
 
-Platforms: Android, iOS and macOS, as supported by
-[`webview_flutter`](https://pub.dev/packages/webview_flutter).
+Platforms: Android, iOS, macOS, Windows and web, as supported by
+[`flutter_inappwebview`](https://pub.dev/packages/flutter_inappwebview).
+Follow its setup for each platform; on macOS, the app needs the
+`com.apple.security.network.client` entitlement.
+
+`onWebViewCreated` gives the `InAppWebViewController`, for example to read
+the page or its cookies.
+
+## Example
+
+[`example/`](example) is a complete checkout: cart, authorization, Wing's
+page, confirmation with `inquiry`, and a receipt. It reads Wing UAT
+credentials from `example/.env` (`flutter run --dart-define-from-file=.env`)
+and keeps the server's part behind a `PaymentBackend` interface. Its live
+tests open Wing's real payment page:
+
+```sh
+cd example
+flutter test integration_test -d macos --dart-define-from-file=.env
+```
 
 ## Paying in the Wing Bank app
 

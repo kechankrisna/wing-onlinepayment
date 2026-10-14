@@ -8,7 +8,7 @@ namespace PhpWing\Model;
 final readonly class AuthorizationResponse
 {
     /**
-     * @param ?string $token authorization token (a JWT), on success
+     * @param ?string $token authorization token (opaque), on success
      * @param ?string $confirmUrl Wing's payment page for the token: redirect the payer there
      */
     public function __construct(

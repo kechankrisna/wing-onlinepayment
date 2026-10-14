@@ -51,8 +51,8 @@ export const AUTHORIZATION_PATH = '/v1/online/payment/authorization';
 /** Wing's payment page, opened by {@link WingService.confirmUrl} */
 export const CONFIRM_PATH = '/v1/online/payment/confirm';
 /**
- * endpoint of {@link WingService.inquiry}; section 4.1 of the spec (v2.0.3)
- * gives `v2`, its endpoint list in section 2 still shows `v1`
+ * endpoint of {@link WingService.inquiry}: `v2`, as in section 4.1 of the
+ * spec (v2.0.3) and on Wing's staging server
  */
 export const INQUIRY_PATH = '/v2/online/payment/transaction/inquiry';
 

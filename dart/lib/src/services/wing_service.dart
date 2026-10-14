@@ -46,8 +46,8 @@ class WingService {
   /// Wing's payment page, opened by [confirmUrl]
   static const String confirmPath = '/v1/online/payment/confirm';
 
-  /// endpoint of [inquiry]. Section 4.1 of the spec (v2.0.3) gives `v2`;
-  /// its endpoint list in section 2 still shows `v1`.
+  /// endpoint of [inquiry]: `v2`, as in section 4.1 of the spec (v2.0.3)
+  /// and on Wing's staging server; the spec's endpoint list shows `v1`.
   static const String inquiryPath = '/v2/online/payment/transaction/inquiry';
 
   /// partner credentials used to encrypt and sign
