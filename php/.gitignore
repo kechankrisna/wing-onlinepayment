@@ -1,0 +1,4 @@
+# the root .gitignore covers .env files, vendor/ and tool caches
+.env
+.env.*
+!.env.example

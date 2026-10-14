@@ -1,0 +1,4 @@
+tags:
+  # calls the Wing UAT environment; needs .env credentials
+  integration:
+    timeout: 2x

@@ -1,0 +1,17 @@
+# https://dart.dev/guides/libraries/private-files
+.dart_tool/
+build/
+
+# credentials: every .env file except the template
+.env
+.env.*
+*.env
+!.env.example
+
+# the example only keeps its Dart code; `flutter create .` regenerates these
+example/android/
+example/ios/
+example/linux/
+example/macos/
+example/web/
+example/windows/
